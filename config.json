@@ -1,0 +1,27 @@
+{
+    "stocks": [
+        {
+            "symbol": "MXRF11",
+            "purchase_price": 10.14,
+            "quantity": 100
+        },
+        {
+            "symbol": "MCHY11",
+            "purchase_price": 9.47,
+            "quantity": 50
+        },
+        {
+            "symbol": "BTCR11",
+            "purchase_price": 9.68,
+            "quantity": 30
+        },
+        {
+            "symbol": "VGIR11",
+            "purchase_price": 9.79,
+            "quantity": 20
+        },
+        {
+            "symbol": "VGHF11"
+        }
+    ]
+}

@@ -175,6 +175,8 @@ def func():
         symbol = stock["symbol"]
         print(f'stock: {list(stock)}')
         print(f'stock_data: {list(stock_data)}')
+        #if symbol in stock_data and stock_data[symbol]:    
+        #latest_price = stock_data[symbol][-1][1]
 
 config_data = load_config()
 stocks_to_monitor = config_data["stocks"]
@@ -182,40 +184,48 @@ stocks_to_monitor = config_data["stocks"]
 # Configuração da interface gráfica
 root = tk.Tk()
 root.title("Stock Price Tracker")
-root.geometry("1080x1920")  # Definir o tamanho da janela para 1080x1920
 
-# Frame principal para todos os elementos
-main_frame = tk.Frame(root)
-main_frame.pack(fill=tk.BOTH, expand=False, padx=10, pady=10)
+# Frame para a lista de ações e o timer
+left_frame = tk.Frame(root)
+left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
 
-# Botão para adicionar nova ação
-tk.Button(main_frame, text="Enter Stock Symbol", command=open_new_window, height=1, font=("Arial", 12)).pack(pady=10)
+tk.Button(left_frame, text="Enter Stock Symbol", command=open_new_window).pack(pady=5)
+stock_listbox = Listbox(left_frame, selectmode=MULTIPLE)
+stock_listbox.pack(pady=5, fill=tk.BOTH, expand=False)
 
-# Listbox para mostrar ações monitoradas
-stock_listbox = Listbox(main_frame, selectmode=MULTIPLE, font=("Arial", 12))
-stock_listbox.pack(pady=10, expand=False)
+timer_label = tk.Label(left_frame, text="Next update in: --:--")
+timer_label.pack(pady=5)
 
-# Label para mostrar o tempo restante para a próxima atualização
-timer_label = tk.Label(main_frame, text="Next update in: --:--", font=("Arial", 12))
-timer_label.pack(pady=10)
+tk.Button(left_frame, text="Show Prices", command=display_gains_losses).pack(pady=5)
+tk.Button(left_frame, text="Start Tracking", command=update_data).pack(pady=5)
 
-# Botão para mostrar preços
-tk.Button(main_frame, text="Show Prices", command=display_gains_losses, height=1, font=("Arial", 12)).pack(pady=10)
+gains_losses_label = tk.Label(left_frame, text="")
+gains_losses_label.pack(pady=5)
 
-# Botão para iniciar o rastreamento
-tk.Button(main_frame, text="Start Tracking", command=update_data, height=1, font=("Arial", 12)).pack(pady=10)
-
-# Label para mostrar ganhos e perdas
-gains_losses_label = tk.Label(main_frame, text="", font=("Arial", 12))
-gains_losses_label.pack(pady=10)
 
 # Frame para o gráfico
-frame = tk.Frame(main_frame, bd=2, relief='sunken')
-frame.pack(pady=10, fill=tk.BOTH, expand=True)
+frame = tk.Frame(root, bd=2, relief='sunken')
+frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
 fig, ax = plt.subplots(figsize=(8, 4))
 canvas = FigureCanvasTkAgg(fig, master=frame)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+
+# Frame para o gráfico do total
+#frameTotal = tk.Frame(root)
+#frameTotal.pack(fill=tk.BOTH, expand=False, padx=10, pady=10)
+
+#figTotal, axTotal = plt.subplots(figsize=(8, 4))
+#canvas = FigureCanvasTkAgg(figTotal, master=frameTotal)
+#canvas.get_tk_widget().pack(fill=tk.BOTH, expand=False)
+
+
+#frame2 = tk.Frame(root)
+#frame2.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+#timer_label3 = tk.Label(frame2, text="3333")
+#timer_label3.pack(pady=5)
 
 # Carregar dados históricos ao iniciar o programa
 for stock in stocks_to_monitor:
